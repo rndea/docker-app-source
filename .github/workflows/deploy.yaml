@@ -1,0 +1,26 @@
+name: Deploy Application
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/github_actions_deploy
+          chmod 600 ~/.ssh/github_actions_deploy
+
+      - name: Test SSH Connection
+        run: |
+          ssh -i ~/.ssh/github_actions_deploy \
+            -o StrictHostKeyChecking=no \
+            ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} \
+            "echo 'SSH connection successful'"
