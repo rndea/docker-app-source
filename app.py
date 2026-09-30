@@ -7,7 +7,7 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(b"Hello from Developer App!")
 
-server = HTTPServer(("0.0.0.0", 8080))
+server = HTTPServer(("0.0.0.0", 8080), Handler)
 
 print("Server running on port 8080")
 
